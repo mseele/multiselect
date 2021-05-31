@@ -16,7 +16,7 @@
       class="multiselect-input"
       :tabindex="tabindex"
       @mousedown="handleInputMousedown"
-      @focus="openDropdown"
+      @focus="onFocus"
       @blur="closeDropdown"
       @keyup.esc="handleEsc"
       @keyup.enter="selectPointer"
@@ -48,7 +48,7 @@
           <input    
             :modelValue="search"
             :value="search"
-            @focus.stop="openDropdown"
+            @focus.stop="onFocus"
             @blur.stop="closeDropdown"
             @keyup.stop.esc="handleEsc"
             @keyup.stop.enter="selectPointer"
@@ -86,7 +86,7 @@
             <input    
               :modelValue="search"
               :value="search"
-              @focus.stop="openDropdown"
+              @focus.stop="onFocus"
               @blur.stop="closeDropdown"
               @keyup.stop.esc="handleEsc"
               @keyup.stop.enter="handleAddTag"
@@ -382,7 +382,9 @@
     setup(props, context)
     { 
       const value = useValue(props, context)
-      const multiselect = useMultiselect(props, context)
+    const multiselect = useMultiselect(props, context, {
+      openDropdown: dropdown.openDropdown,
+    })
       const pointer = usePointer(props, context)
 
       const data = useData(props, context, {
