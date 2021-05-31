@@ -382,9 +382,7 @@
     setup(props, context)
     { 
       const value = useValue(props, context)
-    const multiselect = useMultiselect(props, context, {
-      openDropdown: dropdown.openDropdown,
-    })
+      const multiselect = useMultiselect(props, context)
       const pointer = usePointer(props, context)
 
       const data = useData(props, context, {
@@ -430,6 +428,14 @@
         selectPointer: pointerAction.selectPointer,
       })
 
+      // workaround for https://github.com/vueform/multiselect/issues/75
+      const onFocus = (event) => {
+        if (typeof event.relatedTarget === "undefined") {
+          return;
+        }
+        dropdown.openDropdown()
+      }
+
       return {
         ...value,
         ...dropdown,
@@ -440,6 +446,7 @@
         ...options,
         ...pointerAction,
         ...keyboard,
+        onFocus,
       }
     }
   }
